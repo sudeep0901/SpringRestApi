@@ -23,8 +23,8 @@ public class SpringRestApiApplication {
 	private static final Logger loger = LoggerFactory
 			.getLogger(SpringRestApiApplication.class);
 
-	@Autowired
-	CustomerRepository customerRepo;
+//	@Autowired
+//	CustomerRepository customerRepo;
 
 	public static void main(String[] args) {
 		System.setProperty("spring.devtools.restart.enabled", "false");
@@ -35,28 +35,28 @@ public class SpringRestApiApplication {
 
 	@PostConstruct
 	void postCustomer() {
-		loger.info("Sudeep Customer create started...");
-		
-		Customer customer = new Customer();
-
-		customer.setName("Sudeep Patel");
-
-		try {
-			Date date = new SimpleDateFormat("MM/dd/yyyy").parse("01/09/1984");
-			loger.info("Date created" + date);
-
-			customer.setCreatedOn(date);
-
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		customer.setOrders(null);
-		loger.info(customer.toString());
-		customerRepo.save(customer);
-		
-		loger.info("Customer create successfull...");
+//		loger.info("Sudeep Customer create started...");
+//		
+//		Customer customer = new Customer();
+//
+//		customer.setName("Sudeep Patel");
+//
+//		try {
+//			Date date = new SimpleDateFormat("MM/dd/yyyy").parse("01/09/1984");
+//			loger.info("Date created" + date);
+//
+//			customer.setCreatedOn(date);
+//
+//		} catch (ParseException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//
+//		customer.setOrders(null);
+//		loger.info(customer.toString());
+//		customerRepo.save(customer);
+//		
+//		loger.info("Customer create successfull...");
 
 	}
 }

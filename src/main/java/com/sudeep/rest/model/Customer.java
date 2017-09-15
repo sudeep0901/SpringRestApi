@@ -1,5 +1,6 @@
 package com.sudeep.rest.model;
 
+import java.beans.Transient;
 import java.util.Date;
 import java.util.List;
 
@@ -8,12 +9,29 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreRemove;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
+
+
+
+import javax.transaction.Transactional;
+
+
+
+
+
+import org.springframework.data.annotation.CreatedBy;
 //import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
+@Transactional
 public class Customer {
 
 	@Id
@@ -28,6 +46,9 @@ public class Customer {
 		return mobile;
 	}
 
+	public Long getId() {
+		return id;
+	}
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
 	}
@@ -63,7 +84,7 @@ public class Customer {
 	public void setAge(int age) {
 		this.age = age;
 	}
-
+	
 	public Date getDob() {
 		return dob;
 	}
@@ -124,6 +145,8 @@ public class Customer {
 	private String measurement;
 	private String avatar;
 	private int age;
+	
+	@JsonFormat(pattern="dd-MM-yyyy")
 	private Date dob;
 	private Gender gender;
 	private String remarks;
@@ -131,7 +154,33 @@ public class Customer {
 	private String updatedBy;
 	private String deletedBy;
 	private String updatedOn;
+	private Date created;
+	  private Date updated;
 
+	  private Date deleted;
+
+	  @PrePersist
+	  protected void onCreate() {
+	    created = new Date();
+	  }
+
+	  @PreUpdate
+	  protected void onUpdate() {
+	    updated = new Date();
+	  }
+	  @Column(name = "created_by1")
+	    @CreatedBy
+	    private String createdBy1;
+	 
+	    @Column(name = "modified_by1	")
+	    @LastModifiedBy
+	    private String modifiedBy1;
+
+	  
+	  @PreRemove
+	    public void onPreRemove() {  deleted = new Date(); }
+	  
+	  
 	@CreatedDate
 	@Column(columnDefinition = "TIMESTAMP")
 	private Date createdOn;
@@ -160,7 +209,8 @@ public class Customer {
 	public void setCreatedOn(Date createdOn) {
 		this.createdOn = createdOn;
 	}
-
+	
+	@Transient
 	public List<Order> getOrders() {
 		return orders;
 	}
