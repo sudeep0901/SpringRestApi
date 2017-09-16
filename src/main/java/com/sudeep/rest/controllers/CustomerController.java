@@ -91,6 +91,18 @@ public class CustomerController {
 		}
 		return new ResponseEntity<List<Customer>>(customers, HttpStatus.OK);
 	}
+	
+	
+	@RequestMapping(value = "/allSortbyName", method = RequestMethod.GET)
+	public ResponseEntity<List<Customer>> allSortbyName() {
+		List<Customer> customers = customerService.getAllCustomersSortbyName();
+		if (customers.isEmpty()) {
+			return new ResponseEntity(HttpStatus.NO_CONTENT);
+			// You many decide to return HttpStatus.NOT_FOUND
+		}
+		return new ResponseEntity<List<Customer>>(customers, HttpStatus.OK);
+	}
+
 
 	// -------------------Create a
 	// Customer-------------------------------------------

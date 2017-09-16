@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -84,6 +85,17 @@ public class CustomerService implements CustomerServiceInterface {
 		List<Customer> customers = new ArrayList<Customer>();
 
 		for (Customer customer : customerRepository.findAll()) {
+			customers.add(customer);
+		}
+		return customers;
+	}
+	
+	// Get all Customers and sort
+	public List<Customer> getAllCustomersSortbyName() {
+
+		List<Customer> customers = new ArrayList<Customer>();
+
+		for (Customer customer : customerRepository.findAll(new Sort(Sort.Direction.DESC, "createdOn"))) {
 			customers.add(customer);
 		}
 		return customers;
