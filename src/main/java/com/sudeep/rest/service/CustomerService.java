@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sudeep.rest.model.Customer;
 import com.sudeep.rest.repository.CustomerRepository;
@@ -20,21 +21,63 @@ public class CustomerService implements CustomerServiceInterface {
 		this.customerRepository = customerRepository;
 
 	}
+	
 
 	
-	// Paginate all Customers
-		public List<Customer> paginateAllCustomers(Pageable pageable) {
+	
+	
 
-			List<Customer> customers = new ArrayList<Customer>();
+	public List<Customer> findByAgeGreaterThan(int age, Pageable pageable) {
 
-			for (Customer customer : customerRepository.findAllOrderByCreatedOn(pageable)) {
+		List<Customer> customers = new ArrayList<Customer>();
+//
+		for (Customer customer : customerRepository.findByAgeGreaterThan(age, pageable)) {
+			customers.add(customer);
+		}
+		return customers;
+	}
+	
+	
+	
+	
+	
+	
+@Transactional(readOnly=true)
+ 	    public List<Customer> searchnative(String searchTerm) {
+	        String likeExpression = "%" + searchTerm + "%";
+	        //Call the correct query method, pass the like expression as method parameter
+	        //and return the found persons.
+	        List<Customer> customers = new ArrayList<Customer>();
+	        for (Customer customer : customerRepository.searchWithNativeQuery(searchTerm)) {
 				customers.add(customer);
 			}
 			return customers;
+	    }
+	 
+	 @Transactional(readOnly=true)
+	    public List<Customer> searchjpql(String searchTerm) {
+	        String likeExpression = "%" + searchTerm + "%";
+	        //Call the correct query method, pass the like expression as method parameter
+	        //and return the found persons.
+	        List<Customer> customers = new ArrayList<Customer>();
+	        for (Customer customer : customerRepository.searchWithJPQLQuery(searchTerm)) {
+				customers.add(customer);
+			}
+			return customers;
+	    }
+
+
+	// Paginate all Customers
+	public List<Customer> paginateAllCustomers(Pageable pageable) {
+
+		List<Customer> customers = new ArrayList<Customer>();
+
+		for (Customer customer : customerRepository.findAll(pageable)) {
+			customers.add(customer);
 		}
+		return customers;
+	}
 
-
-	
 	// Get all Customers
 	public List<Customer> getAllCustomers() {
 
